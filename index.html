@@ -218,12 +218,13 @@ a:focus-visible{
 
   /* Keep the letter above the envelope body */
   z-index: 2;
-  transform: translateY(0);
   opacity: 0;
+  transform: translateY(0);
+  pointer-events: none;
+
   transition:
-    transform 1s ease,
-    opacity .4s ease,
-    visibility 0s linear 1s;
+    transform 1s cubic-bezier(.22, .61, .36, 1),
+    opacity .4s ease;
 }
 
 envelope.opening .env-card {
