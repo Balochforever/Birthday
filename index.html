@@ -262,7 +262,15 @@ a:focus-visible{
     transform 1s cubic-bezier(.2,.7,.2,1),
     opacity .6s ease;
 
+  /* was z-index:3 — now starts BELOW the flap (z-index:4) so it's hidden
+     while closed, then jumps above the flap the moment opening starts */
   z-index:3;
+}
+
+/* once the envelope is opening, the card must render above the flap
+   so the flap's rotated plane can never paint over it again */
+.envelope.opening .env-card{
+  z-index:6;
 }
 
 
@@ -301,6 +309,11 @@ a:focus-visible{
   z-index:4;
 
   transform-style:preserve-3d;
+
+  /* keeps the flap's back face from rendering as a solid shape
+     once it's rotated past 90deg, which was the real cause of it
+     visually "covering" the card on the way up */
+  backface-visibility:hidden;
 }
 
 .env-flap::after{
@@ -371,7 +384,9 @@ a:focus-visible{
 /* Envelope opening animation */
 
 .envelope.opening .env-flap{
-  transform:rotateX(-165deg);
+  /* fully past vertical so its rotated plane is edge-on / behind,
+     never overlapping the card's rising path */
+  transform:rotateX(-200deg);
 }
 
 .envelope.opening .wax-seal{
